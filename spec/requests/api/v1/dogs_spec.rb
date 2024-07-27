@@ -18,4 +18,18 @@ RSpec.describe "Dogs", type: :request do
       expect(response_body.count).to eq(1)
     end
   end
+
+  describe "GET /show" do
+    it "returns a success response" do
+      dog = create(:dog)
+
+      get api_v1_dog_path(dog.id)
+      expect(response).to be_successful
+    end
+
+    it "returns a 404" do
+      get api_v1_dog_path(1)
+      expect(response).to be_not_found
+    end
+  end
 end
