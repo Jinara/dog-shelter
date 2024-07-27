@@ -3,7 +3,7 @@ class CreateDogs < ActiveRecord::Migration[7.1]
     create_table :dogs do |t|
       t.string :name, null: false
       t.string :breed, null: false
-      t.string :status, null: false, default: 'found'
+      t.integer :status, null: false, default: 0
 
       t.timestamps
     end
