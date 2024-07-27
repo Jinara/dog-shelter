@@ -43,3 +43,5 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem 'faker'
 end
+
+gem "rack-cors", "~> 2.0"
