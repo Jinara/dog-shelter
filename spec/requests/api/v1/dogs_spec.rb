@@ -32,4 +32,39 @@ RSpec.describe "Dogs", type: :request do
       expect(response).to be_not_found
     end
   end
+
+  describe "POST /create" do
+    it "returns a success response" do
+      dog_params = { name: "Fido", breed: "Golden Retriever", status: "found" }
+      expect {
+        post api_v1_dogs_path, params: { dog: dog_params }
+      }.to change(Dog, :count).by(1)
+
+      expect(response).to be_successful
+    end
+  end
+
+  describe "PUT /update" do
+    it "returns a success response" do
+      dog = create(:dog, status: :found)
+      dog_params = { status: "ready" }
+
+      put api_v1_dog_path(dog.id), params: { dog: dog_params }
+
+      expect(response).to be_successful
+      expect(Dog.ready.count).to eq(1)
+    end
+  end
+
+  describe "DELETE /delete" do
+    it "returns a success response" do
+      dog = create(:dog, status: :found)
+
+      expect {
+        delete api_v1_dog_path(dog.id)
+      }.to change(Dog, :count).by(-1)
+
+      expect(response).to be_successful
+    end
+  end
 end
