@@ -38,6 +38,9 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  #permitimos que salgan correos por el puerto 3001 para evitar choques con el 3000 del server
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3001 }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
