@@ -1,0 +1,57 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/dogs":
+    get:
+      summary: list dogs
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create dog
+      responses:
+        '200':
+          description: successful
+  "/api/v1/dogs/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Dog id
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: show dog
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update dog
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update dog
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete dog
+      responses:
+        '200':
+          description: successful
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com

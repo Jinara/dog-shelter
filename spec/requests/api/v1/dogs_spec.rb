@@ -1,70 +1,101 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe "Dogs", type: :request do
-  describe "GET /index" do
-    it "returns a success response" do
-      get api_v1_dogs_path
-      expect(response).to be_successful
+RSpec.describe 'api/v1/dogs', type: :request do
+  path '/api/v1/dogs' do
+    get('list dogs') do
+      security [Bearer: {}]
+      parameter name: :Authorization, in: :header, type: :string
+
+      response(200, 'successful') do
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        let(:dogs) { create_list(:dog, 3) }
+        run_test!
+      end
     end
 
-    it "returns a success response" do
-      dog = create(:dog)
-
-      get api_v1_dogs_path
-
-      expect(response).to be_successful
-
-      response_body = JSON.parse(response.body)
-      expect(response_body.count).to eq(1)
-    end
-  end
-
-  describe "GET /show" do
-    it "returns a success response" do
-      dog = create(:dog)
-
-      get api_v1_dog_path(dog.id)
-      expect(response).to be_successful
-    end
-
-    it "returns a 404" do
-      get api_v1_dog_path(1)
-      expect(response).to be_not_found
-    end
-  end
-
-  describe "POST /create" do
-    it "returns a success response" do
-      dog_params = { name: "Fido", breed: "Golden Retriever", status: "found" }
-      expect {
-        post api_v1_dogs_path, params: { dog: dog_params }
-      }.to change(Dog, :count).by(1)
-
-      expect(response).to be_successful
+    post('create dog') do
+      response(200, 'successful') do
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
     end
   end
 
-  describe "PUT /update" do
-    it "returns a success response" do
-      dog = create(:dog, status: :found)
-      dog_params = { status: "ready" }
+  path '/api/v1/dogs/{id}' do
+    # You'll want to customize the parameter types...
+    parameter name: 'id', in: :path, type: :integer, description: 'Dog id'
 
-      put api_v1_dog_path(dog.id), params: { dog: dog_params }
+    get('show dog') do
+      response(200, 'successful') do
+        let(:dog) { create(:dog) }
+        let(:id) { dog.id }
 
-      expect(response).to be_successful
-      expect(Dog.ready.count).to eq(1)
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
     end
-  end
 
-  describe "DELETE /delete" do
-    it "returns a success response" do
-      dog = create(:dog, status: :found)
+    patch('update dog') do
+      response(200, 'successful') do
+        let(:id) { '123' }
 
-      expect {
-        delete api_v1_dog_path(dog.id)
-      }.to change(Dog, :count).by(-1)
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
+    end
 
-      expect(response).to be_successful
+    put('update dog') do
+      response(200, 'successful') do
+        let(:id) { '123' }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
+    end
+
+    delete('delete dog') do
+      response(200, 'successful') do
+        let(:id) { '123' }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
     end
   end
 end

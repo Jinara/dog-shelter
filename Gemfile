@@ -42,9 +42,14 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
   gem 'faker'
+  gem 'rswag-specs'
 end
 
 gem "rack-cors", "~> 2.0"
 gem 'devise'
 gem 'devise-jwt'
 gem 'jsonapi-serializer'
+
+# Para documentar la API
+gem 'rswag-api'
+gem 'rswag-ui'
